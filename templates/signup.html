@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="http://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+<link href="{{ url_for('static', filename='home.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ url_for('static', filename='fonts.css') }}" rel="stylesheet" type="text/css" media="all" />
+
+</head>
+<body>
+<div id="wrapper1">
+	<div id="header-wrapper">
+		<div id="header" class="container">
+			<div id="logo"> <span class="icon icon-cogs"></span>
+				<h1>Dita Chatbot</h1></div>
+		</div>
+	</div>
+	<div id="wrapper2">
+		<div id="welcome" class="container">
+			<div class="title">
+				<h2>Sign Up</h2>
+				<div id="menu">
+				<ul>
+					<form action="/post_fields?userid={{ userid }}&chatid={{ chatid }}" method="POST">
+						<br><br>
+						 <div class="row">
+							<input type = "text" name = "name" placeholder="Name" required/>
+						</div>
+						<br>
+						 <div class="row">
+						  <label for="birthday">Birthday:</label>
+						  <input type="date" id="birthday" name="birthday" required>
+						 </div>
+						<br>
+						<div class="row">
+						  <select required name="gender" id="gender">
+							<option value="" disabled selected hidden>Gender</option>
+							<option value="Male">Male</option>
+							<option value="Female">Female</option>
+						  </select>
+						</div>
+						<br>
+						<div class="row">
+         					<input type = "number" name = "weight" placeholder="Weight (kg)" required/>
+						</div>
+						<br>
+						<div class="row">
+							<input type = "number" name = "height" placeholder="Height (cm)" required/>
+						</div>
+						<br>
+						<div class="row">
+						  <select name="preference" id="preference">
+							<option value="" disabled selected hidden>Diet Preference</option>
+							<option value="lose">Want to lose weight</option>
+							<option value="gain">Want to gain weight</option>
+							<option value="maintain">Want to maintain my current weight</option>
+						  </select>
+						</div>
+						<br>
+						<div class="row">
+							  <select name="activity" id="activity">
+								<option value="" disabled selected hidden>Activity</option>
+								<option value="Active">Active</option>
+								<option value="Moderate">Moderate</option>
+								<option value="Inactive">Inactive</option>
+							  </select>
+						</div>
+						<br>
+						<div class="row">
+						<div id="checkboxes">
+						  <label for="one">
+							<input type="checkbox" id="one" name="vegetarian" />Vegetarian</label>
+						  <label for="two">
+							<input type="checkbox" id="two" name="vegan" />Vegan</label>
+						  <label for="three">
+							<input type="checkbox" id="three" name="kosher" />Kosher</label>
+						</div>
+						</div>
+						<br>
+					  <br><br>
+						<p><li class="current_page_item"><input type = "submit" class=button value = "Register" /></li></p>
+				</form>
+				</ul>
+			</div>
+			</div>
+			<p>Dita is <strong>your</strong> resource for eating healthy.</p>
+		</div>
+	</div>
+</div>
+<div id="footer" class="container">
+	<div class="title">
+		<h2>Get in touch</h2>
+		<span class="byline">Come chat with us!</span> </div>
+	<ul class="contact">
+		<li><a href="https://www.facebook.com/Dita-the-Diet-Consultant-121025466013776" class="icon icon-facebook"><span>Facebook</span></a></li>
+	</ul>
+</div>
+<div id="copyright" class="container">
+	<p>&copy; Dita Chatbot. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+Flask
+Flask-RESTful
+gunicorn
+itsdangerous
+Jinja2
+peewee
+Werkzeug
+requests
+clarifai
+firebase-admin
+python-telegram-bot
+PyTelegramBotAPI==2.2.3
+clarifai.rest

@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Dita Recipe</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+<link href="{{ url_for('static', filename='fonts.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ url_for('static', filename='recipeStyle.css') }}" rel="stylesheet" type="text/css" media="all" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+	<div id="welcome" >
+		<div id="menu">			
+				<h1><span id="recipeName"></span></h1>
+				<h2><span id="calories"></span></h2>
+				<img id="recipeImage" src="../static/images/overlay.png" alt="img">
+				<p><span id="summary"></span> </p>
+				<h3>Ingredients:</h3>
+				<ul id="ingredientsList"></ul>
+				<h3>Instructions:</h3>
+				<ol id="instructionsList"></ol>
+		</div>
+	</div>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+	var params = getParameterByName('params');
+	var params_str = window.atob(params)
+	var params_list = params_str.split("&");
+	var apiKey = params_list[0].split("=")[1];
+	var maxCalories = params_list[1].split("=")[1];
+	var restriction = params_list[2].split("=")[1];
+	var number = 20;
+	debugger;
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var recipeObj = JSON.parse(this.responseText);
+			var recipe = recipeObj.results[Math.floor(Math.random() * number)];
+			document.getElementById('recipeName').innerHTML = recipe.title;
+			document.getElementById('calories').innerHTML = recipe.nutrition.nutrients[0].amount + " calories";
+			document.getElementById('recipeImage').src = recipe.image;
+			getRecipe(recipe.id);
+		}
+	};
+	if(restriction == "kosher"){
+		xhttp.open("GET", "https://api.spoonacular.com/recipes/complexSearch?apiKey="+apiKey+"&query=&maxCalories="+maxCalories+"&intolerances=Seafood&excludeIngredients=bacon,shrimp&type=main course&instructionsRequired=true&number="+number, true);
+	}
+	else{
+		xhttp.open("GET", "https://api.spoonacular.com/recipes/complexSearch?apiKey="+apiKey+"&query=&maxCalories="+maxCalories+"&diet="+restriction+"&type=main course&instructionsRequired=true&number="+number, true);
+	}
+	xhttp.send();
+
+	function getRecipe(id){
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var recipeObj = JSON.parse(this.responseText);
+			document.getElementById('summary').innerHTML = recipeObj.summary;
+			var ingredientsCount  = recipeObj.extendedIngredients.length;
+			for(var i = 0; i < ingredientsCount; i++ )
+			{
+				var ingredient = document.createElement("LI"); 
+				var ingredientString = recipeObj.extendedIngredients[i].originalString;          
+				var ingredientName = document.createTextNode(ingredientString);        
+				ingredient.appendChild(ingredientName);                              
+				document.getElementById("ingredientsList").appendChild(ingredient); 
+			}
+
+			var stepCount = recipeObj.analyzedInstructions[0].steps.length;
+			var stepArry = recipeObj.analyzedInstructions[0].steps;
+			for(var i = 0; i < stepCount; i++)
+			{
+				var step = document.createElement("LI"); 
+				var stepString = stepArry[i].step;    
+				var steptName = document.createTextNode(stepString);              
+				step.appendChild(steptName);                              
+				document.getElementById("instructionsList").appendChild(step); 
+			}
+		}
+	};
+	xhttp.open("GET", "https://api.spoonacular.com/recipes/"+id+"/information?apiKey="+apiKey, true);
+	xhttp.send();	
+	}
+
+	// Parse the URL parameter
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+});
+</script>
+</body>
+</html>
